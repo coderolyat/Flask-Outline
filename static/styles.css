@@ -1,0 +1,43 @@
+body {
+    font-family: systtgem-ui, Arial, sans-serif;
+    margin: 0;
+    background: #9fb0f5;
+    color: #333;
+}
+
+.nav{display: flex;
+gap: 16px;
+padding: 14px 18px;
+background: rgb(255, 255, 255);
+border-bottom: 1px solid #07123a;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.container{
+    padding: 24px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.card{
+    background: white;
+    border: 1 px solid  #e6e8ef;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.big{
+    font-size: 28px;
+    margin: 8px 0 0;
+}

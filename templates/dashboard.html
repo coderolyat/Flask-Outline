@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Total records</h3>
+      <p class="big">{{ kpis.total_records }}</p>
+    </div>
+    <div class="card">
+      <h3>Average value</h3>
+      <p class="big">{{ kpis.avg_value }}</p>
+    </div>
+    <div class="card">
+      <h3>Last updated</h3>
+      <p class="big">{{ kpis.last_updated }}</p>
+    </div>
+  </div>
+{% endblock %}
