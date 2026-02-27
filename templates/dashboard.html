@@ -23,4 +23,23 @@
       <p> Total revenue: {{kpis.top_salesperson_revenue}}</p>
     </div>
   </div>
+
+<h2 style="margin-top: 24px;">Top 5 Salespeople</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Total revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for name, revenue in top_5 %}
+      <tr>
+        <td>{{ name }}</td>
+        <td>{{ revenue }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

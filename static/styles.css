@@ -41,3 +41,20 @@ border-bottom: 1px solid #07123a;
     font-size: 28px;
     margin: 8px 0 0;
 }
+
+.table{
+    width: thin;
+    background: white;
+
+}
+
+.table th, .table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #0036f8;
+  text-align: left;
+}
+
+.table th {
+  background: #f700ff;
+  font-weight: 700;
+}
