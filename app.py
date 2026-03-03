@@ -24,7 +24,7 @@ engine = create_engine(DATABASE_URL, future=True)
 @app.get("/")
 def home():
     return render_template("index.html")
-
+# flask route for dashboard page
 @app.get("/dashboard")
 def dashboard():
     """
@@ -35,36 +35,45 @@ def dashboard():
     Revenue = quantity * unit_price
     """
     try:
+       range_key = request.args.get("range", "all").lower()
+
+       if range_key == "30":
+          start_date == date.today() - timedelta(days=30)
+       elif range_key == "90":
+          start_date == date.today() - timedelta(days=90)
+       else:
+          start_date == None
+          range_key = "all"
+
+        where_clause = ""
+        params = {}
+        if start_date:
+          where_clause = "WHERE s.sale_date >= :start_date"
+          params ["start date"]= start_date
+
         with engine.connect() as conn:
-            total_records = conn.execute(
-                text("SELECT COUNT(*) FROM public.sales")
-            ).scalar()
+          #total records
+          total_records = conn.execute(
+             text(f"SELECT COUNT(*) FROM public.sales s {where_clause}"),
+             params
+          ).scalar()
+        #avg revenue per sale
+          avg_revenue_per_sale = conn.execute(
+             text(f"SELECT AVG(s.unit_price * s.quantity) FROM public.sales s {where_clause} ")
+             params
+          ).scalar()
+          last_updated = conn.execute(
+             text(f"SELECT MAX(s.sales_date) FROM public.sales s {where_clause} ")
+             params
+          ).scalar
+        
+          
+       .all()
 
-            avg_revenue_per_sale = conn.execute(
-                text("SELECT AVG(quantity * unit_price) FROM public.sales")
-            ).scalar()
-
-            last_updated = conn.execute(
-                text("SELECT MAX(sale_date) FROM public.sales")
-            ).scalar()
-
-            top_5 = conn.execute(text("""
-                SELECT
-                    sp.salesperson_name,
-                    SUM(s.quantity * s.unit_price) AS total_revenue
-                FROM public.sales s
-                JOIN public.salespeople sp
-                  ON sp.salesperson_id = s.salesperson_id
-                GROUP BY sp.salesperson_name
-                ORDER BY total_revenue DESC
-                LIMIT 5;
-            """)).all()
-
-        top_row = top_5[0] if top_5 else None
-        top_salesperson_name = top_5[0][0] if top_5 else None
-        top_salesperson_name = top_5[0][0] if top_5 else None
-
-        top_salesperson_revenue = float(top_5[0][1]) if top_5 and top_5[0][1] is not None else None
+        #unpacking query results with safety checks for empty results
+        top_row = top_5[0] if top_5 else None # Safely access the top row
+        top_salesperson_name = top_5[0][0] if top_5 else None # Safely access the top salesperson's name the first 0 is the row, the second 0 is the column for salesperson_name
+        top_salesperson_revenue = float(top_5[0][1]) if top_5 and top_5[0][1] is not None else None # cgecjs if top_5 is empty and conmverts revenue to a float if it exists
         
 
         kpis = {
