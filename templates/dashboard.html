@@ -4,42 +4,59 @@
 {% block content %}
   <h1>Dashboard</h1>
 
+  <!-- Date Range Filter (this is the ONLY filter form you should have for now) -->
+  <form method="get" style="margin: 12px 0 18px;">
+    <label for="range" style="font-weight: 600; margin-right: 8px;">Date range:</label>
+    <select id="range" name="range" onchange="this.form.submit()">
+      <option value="all" {% if range_key == "all" %}selected{% endif %}>All time</option>
+      <option value="30" {% if range_key == "30" %}selected{% endif %}>Last 30 days</option>
+      <option value="90" {% if range_key == "90" %}selected{% endif %}>Last 90 days</option>
+    </select>
+  </form>
+
+  {% if kpis.total_records == 0 %}
+    <p><strong>No data found for this date range.</strong> Try “All time”.</p>
+  {% endif %}
+
   <div class="grid">
     <div class="card">
       <h3>Total records</h3>
       <p class="big">{{ kpis.total_records }}</p>
     </div>
+
     <div class="card">
       <h3>Average value</h3>
       <p class="big">{{ kpis.avg_value }}</p>
     </div>
+
     <div class="card">
       <h3>Last updated</h3>
       <p class="big">{{ kpis.last_updated }}</p>
     </div>
+
     <div class="card">
-      <h3>Top SalesPerson</h3>
+      <h3>Top Salesperson</h3>
       <p class="big">{{ kpis.top_salesperson }}</p>
-      <p> Total revenue: {{kpis.top_salesperson_revenue}}</p>
+      <p>Total revenue: {{ kpis.top_salesperson_revenue }}</p>
     </div>
   </div>
 
-<h2 style="margin-top: 24px;">Top 5 Salespeople</h2>
+  <h2 style="margin-top: 24px;">Top 5 Salespeople</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Total revenue</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for name, revenue in top_5 %}
+  <table class="table">
+    <thead>
       <tr>
-        <td>{{ name }}</td>
-        <td>{{ revenue }}</td>
+        <th>Name</th>
+        <th>Total revenue</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for name, revenue in top_5 %}
+        <tr>
+          <td>{{ name }}</td>
+          <td>{{ revenue }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

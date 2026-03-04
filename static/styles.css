@@ -58,3 +58,20 @@ border-bottom: 1px solid #07123a;
   background: #f700ff;
   font-weight: 700;
 }
+
+.filters {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  margin: 16px 0 24px;
+}
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+}
+.filters select, .filters button {
+  padding: 8px 10px;
+  border-radius: 8px;
+}
