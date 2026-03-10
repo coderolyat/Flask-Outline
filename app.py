@@ -122,12 +122,29 @@ def dashboard():
                 params
             ).all()
 
+            #revenue trend graph
+
+            revenue_trend = conn.execute(
+                text(f"""" 
+                     SELECT 
+                        s.sale_date,
+                        SUM(s.quantity * s.unit_price) AS daily_revenue
+                     FROM public.sales s
+                     {where_sql}
+                     GROUP BY s.sale_date
+                     ORDER BY s.sale_date
+
+                     """)
+            ).all()
+
         # Extract top salesperson safely
         top_row = top_5[0] if top_5 else None
         top_salesperson_name = top_row[0] if top_row else None
         top_salesperson_revenue = (
             float(top_row[1]) if top_row and top_row[1] is not None else None
         )
+        chart_labels = [row[0].strftime("%y-%m-%d") for row in revenue_trend]
+        chart_values = [float(row[1]) for row in revenue_trend]
 
         # Build KPIs dictionary
         kpis = {
@@ -148,6 +165,8 @@ def dashboard():
             salespeople=salespeople,
             selected_range=range_key,
             selected_salesperson_id=int(salesperson_id) if salesperson_id else None,
+            chart_labels=chart_labels,
+            chart_values = chart_values,
         )
 
     except Exception as e:
@@ -167,6 +186,8 @@ def dashboard():
             selected_range=range_key,
             selected_salesperson_id=int(salesperson_id) if salesperson_id else None,
             error=str(e),
+            chart_values=[],
+            chart_labels =[],
         )
 
 

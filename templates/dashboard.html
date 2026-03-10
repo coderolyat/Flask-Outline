@@ -11,7 +11,7 @@
     </div>
   {% endif %}
 
-  <!-- Date Range Filter (this is the ONLY filter form you should have for now) -->
+  <!-- Date Range Filter -->
   <form method="get" style="margin: 12px 0 18px;">
   <label for="range" style="font-weight: 600; margin-right: 8px;">Date range:</label>
   <select id="range" name="range" onchange="this.form.submit()">
@@ -67,3 +67,42 @@
     </tbody>
   </table>
 {% endblock %}
+
+<h2 style="margin-top: 32px;"> Revenue Over Time </h2>
+
+<div class ="card" style ="max-width: 900px;"> 
+  <canvas id="revenueChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const chartLabels = {{chart_labels|tojson}};
+  const chartLabels = {{chart_values|tojson}};
+
+  const ctx = document.getElementById('revenueChart').getContext('2d');
+
+   new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Revenue',
+        data: chartValues,
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
