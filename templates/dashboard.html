@@ -3,20 +3,27 @@
 
 {% block content %}
   <h1>Dashboard</h1>
+  
+  {% if error %}
+    <div style="background:#ffe5e5;border:1px solid red;padding:10px;margin-bottom:15px;">
+      <strong>Error:</strong>
+      <pre>{{ error }}</pre>
+    </div>
+  {% endif %}
 
   <!-- Date Range Filter (this is the ONLY filter form you should have for now) -->
   <form method="get" style="margin: 12px 0 18px;">
-    <label for="range" style="font-weight: 600; margin-right: 8px;">Date range:</label>
-    <select id="range" name="range" onchange="this.form.submit()">
-      <option value="all" {% if range_key == "all" %}selected{% endif %}>All time</option>
-      <option value="30" {% if range_key == "30" %}selected{% endif %}>Last 30 days</option>
-      <option value="90" {% if range_key == "90" %}selected{% endif %}>Last 90 days</option>
-    </select>
-  </form>
+  <label for="range" style="font-weight: 600; margin-right: 8px;">Date range:</label>
+  <select id="range" name="range" onchange="this.form.submit()">
+    <option value="all" {% if selected_range == "all" %}selected{% endif %}>All time</option>
+    <option value="180"  {% if selected_range == "180"  %}selected{% endif %}>Last 180 days</option>
+    <option value="90"  {% if selected_range == "90"  %}selected{% endif %}>Last 90 days</option>
+  </select>
+</form>
 
-  {% if kpis.total_records == 0 %}
-    <p><strong>No data found for this date range.</strong> Try “All time”.</p>
-  {% endif %}
+  <!-- {% if kpis.total_records == 0 %}
+    <p><strong>No data found for this date range.</strong> Try “All time”.</p> -->
+  <!-- {% endif %} -->
 
   <div class="grid">
     <div class="card">
@@ -37,7 +44,7 @@
     <div class="card">
       <h3>Top Salesperson</h3>
       <p class="big">{{ kpis.top_salesperson }}</p>
-      <p>Total revenue: {{ kpis.top_salesperson_revenue }}</p>
+      <p>Total revenue: {{ kpis.top_salesperson_revenue }}</p
     </div>
   </div>
 

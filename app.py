@@ -46,8 +46,8 @@ def dashboard():
 
     # Convert range filter into a start_date
     start_date = None
-    if range_key == "30":
-        start_date = date.today() - timedelta(days=30)
+    if range_key == "180":
+        start_date = date.today() - timedelta(days=180)
     elif range_key == "90":
         start_date = date.today() - timedelta(days=90)
     else:
